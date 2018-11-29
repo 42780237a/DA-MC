@@ -22,6 +22,7 @@ import json
 import pandas as pd
 from dense_txt_feature_function import make_txtFeat
 from dense_vect_feature_function import make_vecFeat_v2
+import jieba
 
 UNKNOWN = '<UNK>'
 PADDING = '<PAD>'
@@ -190,12 +191,15 @@ def build_vocab(dataPath, vocabPath, threshold = 0, lowercase = True):
                 if lowercase:
                     line = line.lower()
                 tempLine = line.strip().split('||')
+
                 l1 = tempLine[1][:-1]
                 l2 = tempLine[2][:-1]
-                words1 = word_tokenize(l1)
+                #print (l1, l2)
+                words1 = tokenize_cn(l1)
                 for word in list(words1):
                     cnt[word] += 1
-                words2 = word_tokenize(l2)
+                words2 = tokenize_cn(l2)
+                #print (words1, words2)
                 for word in list(words2):
                     cnt[word] += 1
             except:
@@ -256,10 +260,10 @@ def sentence2Index(dataPath, vocabDict, embeddings, maxLen = 100, lowercase = Tr
                     featuresFile=open(featuresPath, "a+")
                 l, s1, s2 = [v.strip() for v in line.strip().split('||')]
                 #print (l,s1,s2)
-                if lowercase:
-                    s1, s2 = s1.lower(), s2.lower()
-                s1 = [v.strip() for v in word_tokenize(s1)]
-                s2 = [v.strip() for v in word_tokenize(s2)]
+                #if lowercase:
+                    #s1, s2 = s1.lower(), s2.lower()
+                s1 = [v.strip() for v in tokenize_cn(s1)]
+                s2 = [v.strip() for v in tokenize_cn(s2)]
                 if len(s1) > maxLen:
                     s1 = s1[:maxLen]
                 if len(s2) > maxLen:
@@ -326,10 +330,10 @@ def sentence2Index_v2(dataPath, vocabDict, maxLen = 100, lowercase = True):
                 l, s1, s2, txtFeat, vecFeat= [v.strip() for v in line.strip().split('||')]
                 txtFeat = [float(i) for i in txtFeat.split(',')]
                 vecFeat = [float(i) for i in vecFeat.split(',')]
-                if lowercase:
-                    s1, s2 = s1.lower(), s2.lower()
-                s1 = [v.strip() for v in word_tokenize(s1)]
-                s2 = [v.strip() for v in word_tokenize(s2)]
+                #if lowercase:
+                #    s1, s2 = s1.lower(), s2.lower()
+                s1 = [v.strip() for v in tokenize_cn(s1)]
+                s2 = [v.strip() for v in tokenize_cn(s2)]
                 if len(s1) > maxLen:
                     s1 = s1[:maxLen]
                 if len(s2) > maxLen:
@@ -556,17 +560,17 @@ if __name__ == '__main__':
 
     if not os.path.exists('./RWS/clean data/'):
         os.makedirs('./RWS/clean data/')
-    print ("Bad line numbers: %s in trainset " % check_data_form('./RWS/raw data/RWS-train.txt'))
-    print ("Bad line numbers: %s in devset" % check_data_form('./RWS/raw data/RWS-dev.txt'))
-    #convert_form('./RWS/raw data/RWS-train.txt', './RWS/clean data/en_train.txt')
-    #convert_form('./RWS/raw data/RWS-test.txt', './RWS/clean data/en_test.txt')
+    #print ("Bad line numbers: %s in trainset " % check_data_form('./RWS/raw data/en_train.txt'))
+    #print ("Bad line numbers: %s in devset" % check_data_form('./RWS/raw data/testset1_mix_zh.txt'))
+    #convert_form('./RWS/raw data/en_train.txt', './RWS/clean data/en_train.txt')
+    #convert_form('./RWS/raw data/testset1_mix_zh.txt', './RWS/clean data/en_test.txt')
     #convert_form('./RWS/raw data/RWS-dev.txt', './RWS/clean data/en_dev.txt')
 
     # embedding preprocessing
-    convert_embeddings('./RWS/raw data/crawl-100d-2M.vec', './RWS/clean data/embeddings.pkl')
+    #convert_embeddings('./RWS/raw data/crawl-100d-2M.vec', './RWS/clean data/embeddings.pkl')
 
     # vocabulary preprocessing
-    #build_vocab('./RWS/clean data/en_train.txt', './RWS/clean data/vocab.txt')
+    build_vocab('./RWS/clean data/en_train.txt', './RWS/clean data/vocab.txt')
 
 
 

@@ -1,22 +1,14 @@
 from numpy import *
 import scipy.spatial.distance as dist #距离scipy公式
 from fuzzywuzzy import fuzz
+import jieba
+#from Utils import tokenize_cn
 from fuzzywuzzy import process
 # The form of an input will be sentence/vector/embeddings
 
-
-
-
-
-
-
-                   
-
-
-#def tokenize_cn(s,word_emb):
-    
-
-
+# Chinese tokenize
+def tokenize_cn(text):
+    return jieba.lcut(text)
 
 # txtFeat1 : Length distance
 def func_txtFeat1(s1,s2,lang='eng'):
@@ -192,7 +184,7 @@ def func_txtFeat14(s1,s2,lang='eng'):
     return float(fuzz.token_sort_ratio(s1,s2))
 
 
-def make_txtFeat(s1,s2,lang='eng'):
+def make_txtFeat(s1,s2,lang='cn'):
     function_list=  list(func_txtFeat1(s1,s2,lang))+\
                     list(func_txtFeat2(s1,s2,lang))+\
                     list(func_txtFeat3(s1,s2,lang))+\
@@ -208,5 +200,5 @@ def make_txtFeat(s1,s2,lang='eng'):
                     [func_txtFeat14(s1,s2,lang)]
     return function_list
 
-#print (make_txtFeat('hello world','hello girl!'))
+print (make_txtFeat('今天天气很好','今天的天气不错啊'))
 

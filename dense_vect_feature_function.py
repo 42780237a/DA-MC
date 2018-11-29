@@ -544,7 +544,7 @@ def make_vecFeat_v2(wordvec1,wordvec2):
 
 
 if __name__=='__main__':
-    word2vec = Word2Vec()
-    print(make_vecFeat('Obama speaks to the media in Illinois',
-                       'The president greets the press in Chicago', word2vec))
+    #word2vec = Word2Vec()
+    #print(make_vecFeat('Obama speaks to the media in Illinois',
+    #                   'The president greets the press in Chicago', word2vec))
 

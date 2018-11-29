@@ -48,7 +48,7 @@ def train():
     print_log('Loading training and validation data ...', file=log)
     start_time = time.time()
     if not arg.load_features:
-        premise_train, premise_mask_train, hypothesis_train, hypothesis_mask_train, y_train ,features_train= sentence2Index(arg.trainset_path, vocab_dict, embeddings, maxLen=arg.seq_length, write_features=True)
+        premise_train, premise_mask_train, hypothesis_train, hypothesis_mask_train, y_train ,features_train= sentence2Index(arg.trainset_path, vocab_dict, embeddings, maxLen=arg.seq_length, write_features=False)
     else:
         premise_train, premise_mask_train, hypothesis_train, hypothesis_mask_train, y_train ,features_train= sentence2Index_v2('./RWS/clean data/features.txt', vocab_dict, maxLen=arg.seq_length)
 
